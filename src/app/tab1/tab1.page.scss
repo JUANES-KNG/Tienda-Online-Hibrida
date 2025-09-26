@@ -1,26 +1,46 @@
+// src/app/tab1/tab1.page.scss - ESTILOS FUSIONADOS
+// Manteniendo compatibilidad con estilos existentes
+
+// ============ ESTILOS ORIGINALES MEJORADOS ============
 ion-card {
-  img {
+  // Tus estilos originales mejorados
+  img, .product-image {
     height: 200px;
     object-fit: cover;
     width: 100%;
+    transition: transform 0.3s ease; // Agregado: animación
   }
 
-  .price {
+  .price, .product-price .current-price {
     color: var(--ion-color-success);
     font-weight: bold;
     font-size: 18px;
   }
 
   ion-card-content {
-    p {
+    p, .product-description {
       color: var(--ion-color-medium);
       margin-bottom: 15px;
+    }
+  }
+
+  // Nuevos estilos compatibles
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+
+    .product-image {
+      transform: scale(1.05);
     }
   }
 }
 
 ion-button {
-  --border-radius: 8px;
+  --border-radius: 8px; // Tu estilo original
   
   ion-badge {
     position: absolute;
@@ -30,8 +50,314 @@ ion-button {
     min-width: 18px;
     height: 18px;
   }
+
+  // Mejoras para botones de carrito
+  &.add-to-cart-btn {
+    margin-top: 12px;
+    font-weight: 600;
+  }
 }
 
 ion-grid {
-  padding: 10px;
+  padding: 10px; // Tu estilo original
+}
+
+// ============ NUEVOS ESTILOS ADICIONALES ============
+
+// Loading
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: var(--ion-color-medium);
+
+  p {
+    margin-top: 16px;
+    font-size: 16px;
+  }
+}
+
+// Filtros
+.filters-card, .quick-filters-card {
+  margin: 10px;
+  border-radius: 12px;
+}
+
+.chips-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+
+  ion-chip {
+    margin: 2px;
+    transition: transform 0.2s ease;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+}
+
+// Productos específicos
+.product-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.product-image-container {
+  position: relative;
+  height: 200px; // Manteniendo tu altura original
+  overflow: hidden;
+}
+
+.product-badges {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.featured-badge, .discount-badge {
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.stock-indicator {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: bold;
+  color: white;
+
+  &.stock-success {
+    background: var(--ion-color-success);
+  }
+
+  &.stock-warning {
+    background: var(--ion-color-warning);
+  }
+
+  &.stock-danger {
+    background: var(--ion-color-danger);
+  }
+}
+
+.product-title {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.3;
+  margin: 8px 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.price-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.original-price {
+  color: var(--ion-color-medium);
+  text-decoration: line-through;
+  font-size: 14px;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  color: var(--ion-color-warning);
+  font-weight: 500;
+}
+
+.category-chip {
+  margin: 8px 0;
+  font-size: 12px;
+}
+
+// Vista Lista
+.product-list-item {
+  margin-bottom: 8px;
+  border-radius: 8px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+}
+
+.product-thumbnail {
+  --size: 80px;
+  margin-right: 16px;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.thumbnail-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  font-size: 8px;
+  z-index: 10;
+}
+
+.product-price-list {
+  color: var(--ion-color-success);
+  font-weight: bold;
+  font-size: 16px;
+  margin: 4px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.original-price-small {
+  color: var(--ion-color-medium);
+  text-decoration: line-through;
+  font-size: 12px;
+  font-weight: normal;
+}
+
+.product-description-list {
+  color: var(--ion-color-medium);
+  font-size: 14px;
+  margin: 4px 0 8px 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.product-meta-list {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.rating-small {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 12px;
+  color: var(--ion-color-warning);
+}
+
+.stock-small {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 2px 6px;
+  border-radius: 4px;
+
+  &.stock-success {
+    color: var(--ion-color-success);
+    background: rgba(var(--ion-color-success-rgb), 0.1);
+  }
+
+  &.stock-warning {
+    color: var(--ion-color-warning);
+    background: rgba(var(--ion-color-warning-rgb), 0.1);
+  }
+
+  &.stock-danger {
+    color: var(--ion-color-danger);
+    background: rgba(var(--ion-color-danger-rgb), 0.1);
+  }
+}
+
+// Sin productos
+.no-products {
+  text-align: center;
+  padding: 60px 20px;
+
+  ion-icon {
+    font-size: 80px;
+    margin-bottom: 20px;
+  }
+
+  h2 {
+    font-size: 24px;
+    margin: 20px 0 10px 0;
+    color: var(--ion-color-dark);
+  }
+
+  p {
+    color: var(--ion-color-medium);
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+}
+
+// ============ RESPONSIVE (manteniendo tu base) ============
+@media (max-width: 768px) {
+  .product-image-container {
+    height: 160px;
+  }
+  
+  .product-title {
+    font-size: 14px;
+  }
+  
+  .price, .current-price {
+    font-size: 16px;
+  }
+  
+  .chips-container {
+    justify-content: flex-start;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding: 0 8px;
+
+    ion-chip {
+      flex-shrink: 0;
+    }
+  }
+}
+
+// ============ ANIMACIONES OPCIONALES ============
+// Solo si quieres animaciones, sino puedes omitir esta sección
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.product-card {
+  animation: fadeIn 0.5s ease-out;
+}
+
+// ============ ACCESIBILIDAD ============
+@media (prefers-reduced-motion: reduce) {
+  .product-card,
+  .product-image,
+  .chips-container ion-chip {
+    transition: none;
+    animation: none;
+  }
+  
+  .product-card:hover {
+    transform: none;
+  }
+  
+  .product-card:hover .product-image {
+    transform: none;
+  }
 }

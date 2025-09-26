@@ -1,45 +1,356 @@
+<!-- src/app/tab1/tab1.page.html - VERSIÓN LIMPIA SIN ESTILOS INLINE -->
 <ion-header [translucent]="true">
+  <!-- Header principal -->
   <ion-toolbar color="primary">
-    <ion-title>Tienda</ion-title>
+    <ion-title>🛍️ Tienda</ion-title>
     <ion-buttons slot="end">
+      <!-- Botón carrito -->
       <ion-button (click)="goToCart()">
         <ion-icon name="cart-outline"></ion-icon>
         <ion-badge color="danger" *ngIf="cartItemCount > 0">
           {{ cartItemCount }}
         </ion-badge>
       </ion-button>
+      
+      <!-- Botón estadísticas -->
+      <ion-button fill="clear" (click)="showStats()">
+        <ion-icon name="stats-chart-outline"></ion-icon>
+      </ion-button>
+      
+      <!-- Botón refresh -->
+      <ion-button fill="clear" (click)="refreshProducts()">
+        <ion-icon name="refresh-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <!-- Barra de búsqueda -->
+  <ion-toolbar>
+    <ion-searchbar
+      [(ngModel)]="searchTerm"
+      (ionInput)="onSearchChange($event)"
+      placeholder="🔍 Buscar productos..."
+      debounce="500"
+      show-clear-button="focus"
+      autocomplete="off">
+    </ion-searchbar>
+  </ion-toolbar>
+
+  <!-- Filtros y controles -->
+  <ion-toolbar>
+    <ion-segment [(ngModel)]="selectedCategory" (ionChange)="onCategoryChange($event)" scrollable>
+      <ion-segment-button value="">
+        <ion-label>Todos</ion-label>
+      </ion-segment-button>
+      <ion-segment-button *ngFor="let category of categories" [value]="category">
+        <ion-label>{{ category }}</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+
+  <!-- Controles de vista y filtros -->
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button fill="clear" (click)="toggleFilters()">
+        <ion-icon name="filter-outline"></ion-icon>
+        <ion-label>Filtros</ion-label>
+      </ion-button>
+    </ion-buttons>
+    
+    <ion-title size="small" *ngIf="products.length > 0">
+      {{ products.length }} producto{{ products.length !== 1 ? 's' : '' }}
+    </ion-title>
+    
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="showSortOptions()">
+        <ion-icon name="swap-vertical-outline"></ion-icon>
+        <ion-label>Ordenar</ion-label>
+      </ion-button>
+      
+      <ion-button fill="clear" (click)="toggleViewMode()">
+        <ion-icon [name]="viewMode === 'grid' ? 'list-outline' : 'grid-outline'"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tienda</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <!-- Loading spinner -->
+  <div *ngIf="isLoading" class="loading-container">
+    <ion-spinner name="crescent" color="primary"></ion-spinner>
+    <p>Cargando productos...</p>
+  </div>
 
-  <ion-grid>
-    <ion-row>
-      <ion-col size="12" size-md="6" size-lg="4" *ngFor="let product of products">
-        <ion-card>
+  <!-- Pull to refresh -->
+  <ion-refresher slot="fixed" (ionRefresh)="refreshProducts($event)">
+    <ion-refresher-content
+      pulling-icon="chevron-down-circle-outline"
+      pulling-text="🔄 Desliza para actualizar"
+      refreshing-spinner="circles"
+      refreshing-text="Actualizando productos...">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <!-- Filtros avanzados (colapsable) -->
+  <ion-card *ngIf="showFilters" class="filters-card">
+    <ion-card-header>
+      <ion-card-title>🎛️ Filtros Avanzados</ion-card-title>
+    </ion-card-header>
+    
+    <ion-card-content>
+      <!-- Rango de precio -->
+      <ion-item>
+        <ion-label>💰 Precio: ${{ priceRange.lower }} - ${{ priceRange.upper }}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-range 
+          [(ngModel)]="priceRange" 
+          (ionChange)="onPriceRangeChange($event)"
+          dual-knobs="true" 
+          min="0" 
+          max="2000" 
+          step="50"
+          pin="true"
+          color="primary">
+          <ion-label slot="start">$0</ion-label>
+          <ion-label slot="end">$2000</ion-label>
+        </ion-range>
+      </ion-item>
+
+      <!-- Toggles de filtros -->
+      <ion-item>
+        <ion-icon name="cube-outline" slot="start"></ion-icon>
+        <ion-label>Solo con stock</ion-label>
+        <ion-toggle 
+          [(ngModel)]="showOnlyInStock" 
+          (ionChange)="onInStockToggleChange($event)"
+          color="success">
+        </ion-toggle>
+      </ion-item>
+
+      <ion-item>
+        <ion-icon name="star-outline" slot="start"></ion-icon>
+        <ion-label>Solo destacados</ion-label>
+        <ion-toggle 
+          [(ngModel)]="showOnlyFeatured" 
+          (ionChange)="onFeaturedToggleChange($event)"
+          color="warning">
+        </ion-toggle>
+      </ion-item>
+
+      <ion-item>
+        <ion-icon name="pricetag-outline" slot="start"></ion-icon>
+        <ion-label>Solo con descuento</ion-label>
+        <ion-toggle 
+          [(ngModel)]="showOnlyDiscounted" 
+          (ionChange)="onDiscountedToggleChange($event)"
+          color="danger">
+        </ion-toggle>
+      </ion-item>
+
+      <!-- Botón limpiar filtros -->
+      <ion-button 
+        expand="block" 
+        fill="outline" 
+        color="medium" 
+        (click)="clearFilters()"
+        class="ion-margin-top">
+        <ion-icon name="refresh-outline" slot="start"></ion-icon>
+        Limpiar filtros
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Filtros rápidos -->
+  <ion-card class="quick-filters-card">
+    <ion-card-content>
+      <div class="chips-container">
+        <ion-chip (click)="loadAllProducts()" color="primary" outline>
+          <ion-icon name="grid-outline"></ion-icon>
+          <ion-label>Todos</ion-label>
+        </ion-chip>
+        
+        <ion-chip (click)="loadFeaturedProducts()" color="warning" outline>
+          <ion-icon name="star-outline"></ion-icon>
+          <ion-label>Destacados</ion-label>
+        </ion-chip>
+        
+        <ion-chip (click)="loadDiscountedProducts()" color="danger" outline>
+          <ion-icon name="pricetag-outline"></ion-icon>
+          <ion-label>Ofertas</ion-label>
+        </ion-chip>
+        
+        <ion-chip (click)="loadTopRatedProducts()" color="success" outline>
+          <ion-icon name="trending-up-outline"></ion-icon>
+          <ion-label>Top rated</ion-label>
+        </ion-chip>
+        
+        <ion-chip (click)="loadCheapestProducts()" color="tertiary" outline>
+          <ion-icon name="cash-outline"></ion-icon>
+          <ion-label>Económicos</ion-label>
+        </ion-chip>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Contenido principal -->
+  <div *ngIf="!isLoading">
+    <!-- Mensaje cuando no hay productos -->
+    <ion-card *ngIf="products.length === 0" class="no-products-card">
+      <ion-card-content>
+        <div class="no-products">
+          <ion-icon name="search-outline" size="large" color="medium"></ion-icon>
+          <h2>😔 No se encontraron productos</h2>
+          <p>Intenta con otros términos de búsqueda o revisa los filtros aplicados.</p>
+          <ion-button (click)="clearFilters()" color="primary">
+            <ion-icon name="refresh-outline" slot="start"></ion-icon>
+            Mostrar todos los productos
+          </ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- VISTA GRID -->
+    <ion-grid *ngIf="products.length > 0 && viewMode === 'grid'">
+      <ion-row>
+        <ion-col 
+          size="12" 
+          size-sm="6" 
+          size-md="4" 
+          size-lg="3" 
+          *ngFor="let product of products; trackBy: trackByProductId">
+          
+          <ion-card class="product-card" button (click)="viewProductDetails(product)">
+            <!-- Imagen del producto -->
+            <div class="product-image-container">
+              <img [src]="product.image" [alt]="product.name" class="product-image">
+              
+              <!-- Badges -->
+              <div class="product-badges">
+                <ion-badge *ngIf="product.featured" color="warning" class="featured-badge">
+                  ⭐ Destacado
+                </ion-badge>
+                <ion-badge *ngIf="product.discount" color="danger" class="discount-badge">
+                  -{{ product.discount }}%
+                </ion-badge>
+              </div>
+              
+              <!-- Stock status -->
+              <div class="stock-indicator" [ngClass]="'stock-' + getStockColor(product)">
+                {{ getStockStatus(product) }}
+              </div>
+            </div>
+            
+            <ion-card-header>
+              <ion-card-title class="product-title">{{ product.name }}</ion-card-title>
+              <ion-card-subtitle class="product-price">
+                <div class="price-container">
+                  <span class="current-price">${{ product.price.toFixed(2) }}</span>
+                  <span *ngIf="product.originalPrice" class="original-price">
+                    ${{ product.originalPrice.toFixed(2) }}
+                  </span>
+                </div>
+                
+                <!-- Rating -->
+                <div *ngIf="product.rating" class="rating">
+                  <ion-icon name="star" color="warning"></ion-icon>
+                  <span>{{ product.rating }}/5</span>
+                </div>
+              </ion-card-subtitle>
+            </ion-card-header>
+            
+            <ion-card-content>
+              <p class="product-description">{{ product.description }}</p>
+              
+              <!-- Categoría -->
+              <ion-chip color="tertiary" outline class="category-chip">
+                <ion-label>{{ product.category }}</ion-label>
+              </ion-chip>
+              
+              <!-- Botón agregar al carrito -->
+              <ion-button 
+                expand="block" 
+                color="primary" 
+                (click)="addToCart(product, $event)"
+                [disabled]="product.stock === 0"
+                class="add-to-cart-btn">
+                <ion-icon name="cart-outline" slot="start"></ion-icon>
+                {{ product.stock === 0 ? 'Sin stock' : 'Agregar al carrito' }}
+              </ion-button>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <!-- VISTA LISTA -->
+    <ion-list *ngIf="products.length > 0 && viewMode === 'list'">
+      <ion-item 
+        *ngFor="let product of products; trackBy: trackByProductId" 
+        button 
+        (click)="viewProductDetails(product)"
+        class="product-list-item">
+        
+        <!-- Imagen -->
+        <ion-thumbnail slot="start" class="product-thumbnail">
           <img [src]="product.image" [alt]="product.name">
-          <ion-card-header>
-            <ion-card-title>{{ product.name }}</ion-card-title>
-            <ion-card-subtitle class="price">${{ product.price.toFixed(2) }}</ion-card-subtitle>
-          </ion-card-header>
-          <ion-card-content>
-            <p>{{ product.description }}</p>
-            <ion-button 
-              expand="block" 
-              color="primary" 
-              (click)="addToCart(product)">
-              <ion-icon name="cart-outline" slot="start"></ion-icon>
-              Agregar al carrito
-            </ion-button>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+          
+          <!-- Badge de descuento -->
+          <ion-badge *ngIf="product.discount" color="danger" class="thumbnail-badge">
+            -{{ product.discount }}%
+          </ion-badge>
+        </ion-thumbnail>
+        
+        <!-- Contenido principal -->
+        <ion-label>
+          <h2 class="product-title">
+            {{ product.name }}
+            <ion-icon *ngIf="product.featured" name="star" color="warning" class="featured-icon"></ion-icon>
+          </h2>
+          
+          <h3 class="product-price-list">
+            ${{ product.price.toFixed(2) }}
+            <span *ngIf="product.originalPrice" class="original-price-small">
+              ${{ product.originalPrice.toFixed(2) }}
+            </span>
+          </h3>
+          
+          <p class="product-description-list">{{ product.description }}</p>
+          
+          <div class="product-meta-list">
+            <ion-chip color="tertiary" outline size="small">
+              {{ product.category }}
+            </ion-chip>
+            
+            <span *ngIf="product.rating" class="rating-small">
+              <ion-icon name="star" color="warning"></ion-icon>
+              {{ product.rating }}/5
+            </span>
+            
+            <span class="stock-small" [ngClass]="'stock-' + getStockColor(product)">
+              {{ getStockStatus(product) }}
+            </span>
+          </div>
+        </ion-label>
+        
+        <!-- Botón agregar -->
+        <ion-button 
+          slot="end" 
+          fill="outline" 
+          (click)="addToCart(product, $event)"
+          [disabled]="product.stock === 0"
+          [color]="product.stock === 0 ? 'medium' : 'primary'">
+          <ion-icon name="cart-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <!-- Infinite scroll (para futuras implementaciones) -->
+  <ion-infinite-scroll threshold="100px" disabled>
+    <ion-infinite-scroll-content
+      loading-spinner="bubbles"
+      loading-text="Cargando más productos...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>
