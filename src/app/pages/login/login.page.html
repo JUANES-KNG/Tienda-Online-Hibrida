@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>{{ isLogin ? 'Iniciar Sesión' : 'Registrarse' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="login-container">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>{{ isLogin ? 'Bienvenido' : 'Crear Cuenta' }}</ion-card-title>
+        <ion-card-subtitle>
+          {{ isLogin ? 'Ingresa tus credenciales' : 'Completa el formulario' }}
+        </ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-item *ngIf="!isLogin">
+          <ion-label position="floating">Nombre</ion-label>
+          <ion-input 
+            type="text" 
+            [(ngModel)]="name">
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Email</ion-label>
+          <ion-input 
+            type="email" 
+            [(ngModel)]="email">
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Contraseña</ion-label>
+          <ion-input 
+            type="password" 
+            [(ngModel)]="password">
+          </ion-input>
+        </ion-item>
+
+        <ion-button 
+          expand="block" 
+          class="ion-margin-top"
+          (click)="onSubmit()"
+          [disabled]="!email || !password || (!isLogin && !name)">
+          {{ isLogin ? 'Iniciar Sesión' : 'Registrarse' }}
+        </ion-button>
+
+        <ion-button 
+          expand="block" 
+          fill="clear" 
+          (click)="toggleMode()">
+          {{ isLogin ? '¿No tienes cuenta? Regístrate' : '¿Ya tienes cuenta? Inicia sesión' }}
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

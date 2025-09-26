@@ -1,2 +1,136 @@
-// For information on how to create your own theme, please see:
-// http://ionicframework.com/docs/theming/
+// Tema Tech Dark
+:root {
+  // Colores principales - Tech Dark
+  --ion-color-primary: #00d4ff;
+  --ion-color-primary-rgb: 0, 212, 255;
+  --ion-color-primary-contrast: #000000;
+  --ion-color-primary-contrast-rgb: 0, 0, 0;
+  --ion-color-primary-shade: #00bbe0;
+  --ion-color-primary-tint: #1ad8ff;
+
+  // Secondary - Azul eléctrico
+  --ion-color-secondary: #0080ff;
+  --ion-color-secondary-rgb: 0, 128, 255;
+  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-contrast-rgb: 255, 255, 255;
+  --ion-color-secondary-shade: #0070e0;
+  --ion-color-secondary-tint: #1a8cff;
+
+  // Tertiary - Púrpura tech
+  --ion-color-tertiary: #8a2be2;
+  --ion-color-tertiary-rgb: 138, 43, 226;
+  --ion-color-tertiary-contrast: #ffffff;
+  --ion-color-tertiary-contrast-rgb: 255, 255, 255;
+  --ion-color-tertiary-shade: #7926c7;
+  --ion-color-tertiary-tint: #9641e8;
+
+  // Success - Verde neón
+  --ion-color-success: #00ff88;
+  --ion-color-success-rgb: 0, 255, 136;
+  --ion-color-success-contrast: #000000;
+  --ion-color-success-contrast-rgb: 0, 0, 0;
+  --ion-color-success-shade: #00e078;
+  --ion-color-success-tint: #1aff94;
+
+  // Warning - Naranja tech
+  --ion-color-warning: #ff8800;
+  --ion-color-warning-rgb: 255, 136, 0;
+  --ion-color-warning-contrast: #000000;
+  --ion-color-warning-contrast-rgb: 0, 0, 0;
+  --ion-color-warning-shade: #e07800;
+  --ion-color-warning-tint: #ff941a;
+
+  // Danger - Rojo neón
+  --ion-color-danger: #ff0066;
+  --ion-color-danger-rgb: 255, 0, 102;
+  --ion-color-danger-contrast: #ffffff;
+  --ion-color-danger-contrast-rgb: 255, 255, 255;
+  --ion-color-danger-shade: #e0005a;
+  --ion-color-danger-tint: #ff1a75;
+
+  // Dark - Negro profundo
+  --ion-color-dark: #0a0a0a;
+  --ion-color-dark-rgb: 10, 10, 10;
+  --ion-color-dark-contrast: #ffffff;
+  --ion-color-dark-contrast-rgb: 255, 255, 255;
+  --ion-color-dark-shade: #090909;
+  --ion-color-dark-tint: #232323;
+
+  // Medium - Gris tech
+  --ion-color-medium: #666666;
+  --ion-color-medium-rgb: 102, 102, 102;
+  --ion-color-medium-contrast: #ffffff;
+  --ion-color-medium-contrast-rgb: 255, 255, 255;
+  --ion-color-medium-shade: #5a5a5a;
+  --ion-color-medium-tint: #757575;
+
+  // Light - Gris claro
+  --ion-color-light: #f4f5f8;
+  --ion-color-light-rgb: 244, 245, 248;
+  --ion-color-light-contrast: #000000;
+  --ion-color-light-contrast-rgb: 0, 0, 0;
+  --ion-color-light-shade: #d7d8da;
+  --ion-color-light-tint: #f5f6f9;
+
+  // Backgrounds y superficies - DARK THEME
+  --ion-background-color: #0a0a0a;
+  --ion-background-color-rgb: 10, 10, 10;
+  
+  --ion-text-color: #ffffff;
+  --ion-text-color-rgb: 255, 255, 255;
+  
+  --ion-card-background: #1a1a1a;
+  --ion-toolbar-background: #0f0f0f;
+  --ion-tab-bar-background: #0f0f0f;
+  --ion-item-background: #1a1a1a;
+  
+  // Bordes y separadores
+  --ion-border-color: #333333;
+  --ion-item-border-color: #333333;
+  
+  // Input backgrounds
+  --ion-input-background: #1f1f1f;
+  
+  // Backdrop
+  --ion-backdrop-color: rgba(0, 0, 0, 0.8);
+}
+
+// Estilos globales para el tema tech
+body {
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+  min-height: 100vh;
+}
+
+// Efectos de glow para elementos tech
+.tech-glow {
+  box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+  border: 1px solid rgba(0, 212, 255, 0.2);
+}
+
+.tech-glow-success {
+  box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+  border: 1px solid rgba(0, 255, 136, 0.2);
+}
+
+.tech-glow-danger {
+  box-shadow: 0 0 10px rgba(255, 0, 102, 0.3);
+  border: 1px solid rgba(255, 0, 102, 0.2);
+}
+
+// Scrollbars personalizados
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #00d4ff;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #0080ff;
+}

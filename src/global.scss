@@ -1,12 +1,6 @@
 /*
  * App Global CSS
- * ----------------------------------------------------------------------------
- * Put style rules here that you want to apply globally. These styles are for
- * the entire app and not just one component. Additionally, this file can be
- * used as an entry point to import other CSS/Sass files to be included in the
- * output CSS.
- * For more information on global stylesheets, visit the documentation:
- * https://ionicframework.com/docs/layout/global-stylesheets
+ * Tech Dark Theme
  */
 
 /* Core CSS required for Ionic components to work properly */
@@ -25,13 +19,180 @@
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
 
-/**
- * Ionic Dark Mode
- * -----------------------------------------------------
- * For more info, please see:
- * https://ionicframework.com/docs/theming/dark-mode
- */
+/* Ionic Dark Mode - ALWAYS ENABLED */
+@import "@ionic/angular/css/palettes/dark.always.css";
 
-/* @import "@ionic/angular/css/palettes/dark.always.css"; */
-/* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import "@ionic/angular/css/palettes/dark.system.css";
+/* Tech Dark Theme Global Overrides */
+ion-app {
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+  min-height: 100vh;
+}
+
+/* Card styling global */
+ion-card {
+  --background: #1a1a1a;
+  --color: #ffffff;
+  border: 1px solid rgba(0, 212, 255, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+  
+  &:hover {
+    border-color: rgba(0, 212, 255, 0.3);
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+  }
+}
+
+/* Toolbar styling */
+ion-toolbar {
+  --background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+  --color: #ffffff;
+  border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+}
+
+/* Tab bar styling */
+ion-tab-bar {
+  --background: #0f0f0f;
+  --color: #666666;
+  border-top: 1px solid rgba(0, 212, 255, 0.2);
+  
+  ion-tab-button {
+    --color-selected: #00d4ff;
+    --color: #666666;
+    
+    &.tab-selected {
+      --color: #00d4ff;
+      
+      ion-icon {
+        filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.6));
+      }
+    }
+  }
+}
+
+/* Button styling global */
+ion-button {
+  --border-radius: 8px;
+  font-weight: 600;
+  text-transform: none;
+  
+  &[color="primary"] {
+    --box-shadow: 0 4px 20px rgba(0, 212, 255, 0.3);
+    
+    &:hover {
+      --box-shadow: 0 6px 25px rgba(0, 212, 255, 0.4);
+      transform: translateY(-1px);
+      transition: all 0.2s ease;
+    }
+  }
+  
+  &[color="success"] {
+    --box-shadow: 0 4px 20px rgba(0, 255, 136, 0.3);
+  }
+  
+  &[color="danger"] {
+    --box-shadow: 0 4px 20px rgba(255, 0, 102, 0.3);
+  }
+}
+
+/* Input styling */
+ion-input, ion-textarea, ion-select {
+  --background: #1f1f1f;
+  --color: #ffffff;
+  --border-color: rgba(0, 212, 255, 0.2);
+  --border-radius: 8px;
+  --padding-start: 12px;
+  --padding-end: 12px;
+  
+  &.ion-focused {
+    --border-color: #00d4ff;
+    --box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+  }
+}
+
+/* Item styling */
+ion-item {
+  --background: #1a1a1a;
+  --color: #ffffff;
+  --border-color: rgba(0, 212, 255, 0.1);
+  --inner-border-width: 0 0 1px 0;
+  --border-radius: 8px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  margin-bottom: 8px;
+  
+  &:hover {
+    --background: rgba(0, 212, 255, 0.05);
+    transition: all 0.2s ease;
+  }
+}
+
+/* Badge styling */
+ion-badge {
+  --background: linear-gradient(45deg, #ff0066, #ff3385);
+  --color: #ffffff;
+  border-radius: 12px;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(255, 0, 102, 0.4);
+}
+
+/* Loading spinner */
+ion-loading {
+  --background: rgba(26, 26, 26, 0.95);
+  --color: #00d4ff;
+  --spinner-color: #00d4ff;
+  backdrop-filter: blur(10px);
+}
+
+/* Alert styling */
+ion-alert {
+  --background: #1a1a1a;
+  --color: #ffffff;
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  border-radius: 12px;
+}
+
+/* Toast styling */
+ion-toast {
+  --background: linear-gradient(45deg, #1a1a1a, #2a2a2a);
+  --color: #ffffff;
+  --border-color: rgba(0, 212, 255, 0.3);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+}
+
+/* Clases utilitarias tech */
+.tech-text-gradient {
+  background: linear-gradient(45deg, #00d4ff, #0080ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: bold;
+}
+
+.tech-border {
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  border-radius: 12px;
+}
+
+.tech-glow-box {
+  box-shadow: 
+    0 0 20px rgba(0, 212, 255, 0.2),
+    inset 0 0 20px rgba(0, 212, 255, 0.05);
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  border-radius: 12px;
+}
+
+/* Animaciones tech */
+@keyframes pulse-tech {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.6);
+  }
+}
+
+.tech-pulse {
+  animation: pulse-tech 2s infinite;
+}

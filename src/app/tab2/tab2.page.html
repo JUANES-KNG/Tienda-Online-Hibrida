@@ -1,12 +1,16 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-title>Galería</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-button expand="full" (click)="addPhotoToGallery()">
+  <ion-button expand="full" (click)="addPhotoToGallery()" color="secondary">
     Tomar Foto
+  </ion-button>
+
+  <ion-button expand="full" (click)="goToCart()" color="success" class="ion-margin-top">
+    Ver Carrito ({{ cartItemCount }} items)
   </ion-button>
 
   <ion-grid>

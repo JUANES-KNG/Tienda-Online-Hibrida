@@ -1,0 +1,75 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/tab1"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Carrito de Compras</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="clearCart()" *ngIf="cartItems.length > 0">
+        <ion-icon name="trash-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Carrito vacío -->
+  <div *ngIf="cartItems.length === 0" class="empty-cart">
+    <ion-icon name="cart-outline" size="large"></ion-icon>
+    <h2>Tu carrito está vacío</h2>
+    <p>Agrega productos para comenzar a comprar</p>
+  </div>
+
+  <!-- Lista de productos en el carrito -->
+  <ion-list *ngIf="cartItems.length > 0">
+    <ion-item *ngFor="let item of cartItems" lines="full">
+      <ion-thumbnail slot="start">
+        <img [src]="item.product.image" [alt]="item.product.name">
+      </ion-thumbnail>
+      
+      <ion-label>
+        <h2>{{ item.product.name }}</h2>
+        <p>{{ item.product.description }}</p>
+        <p class="price">${{ item.product.price.toFixed(2) }}</p>
+      </ion-label>
+
+      <div slot="end" class="quantity-controls">
+        <ion-button 
+          fill="clear" 
+          size="small" 
+          (click)="updateQuantity(item.product.id, -1)">
+          <ion-icon name="remove-circle-outline"></ion-icon>
+        </ion-button>
+        <span class="quantity">{{ item.quantity }}</span>
+        <ion-button 
+          fill="clear" 
+          size="small" 
+          (click)="updateQuantity(item.product.id, 1)">
+          <ion-icon name="add-circle-outline"></ion-icon>
+        </ion-button>
+        <ion-button 
+          fill="clear" 
+          color="danger" 
+          size="small" 
+          (click)="removeItem(item.product.id)">
+          <ion-icon name="trash-outline"></ion-icon>
+        </ion-button>
+      </div>
+    </ion-item>
+  </ion-list>
+
+  <!-- Footer con total y botón de compra -->
+  <div class="cart-footer" *ngIf="cartItems.length > 0">
+    <ion-card>
+      <ion-card-content>
+        <div class="total-section">
+          <h2>Total</h2>
+          <h2 class="total-amount">${{ total.toFixed(2) }}</h2>
+        </div>
+        <ion-button expand="block" color="success" (click)="checkout()">
+          Finalizar Compra
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
